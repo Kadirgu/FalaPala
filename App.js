@@ -16,6 +16,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 // Create the navigator
 const Tab = createBottomTabNavigator();
 
+// import Firebase
+const firebase = require('firebase');
+require('firebase/firestore');
+
 export default class App extends React.Component {
  constructor(props) {
    super(props);
