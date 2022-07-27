@@ -10,6 +10,7 @@ import 'react-native-gesture-handler';
 
 // import react Navigation
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
 // Create the navigator
