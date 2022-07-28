@@ -17,6 +17,7 @@ export default function Start(props) {
     // State to hold information if user is offline or online
     const [isConnected, setIsConnected] = useState(false);
 
+
     // Authenticate the user via Firebase and then redirect to the chat screen, passing the name and color props
     const onHandleStart = () => {
         if (isConnected) {
@@ -40,7 +41,7 @@ export default function Start(props) {
                 style={styles.image}
             >
 
-                <Text style={styles.title}>App title</Text>
+                <Text style={styles.title}>FalaPala</Text>
 
                 <View style={styles.box}>
 
