@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, View, Pressable, TouchableOpacity, ImageBackground, Platform, KeyboardAvoidingView } from 'react-native';
 import BackgroundImage from '../img/Background_Image.png';
+
+import { signInAnonymously } from "firebase/auth";
+import { auth } from '../config/firebase';
 
 // Create constant that holds background colors for Chat Screen
 const colors = {
@@ -14,24 +17,16 @@ export default function Start(props) {
     let [name, setName] = useState();
     let [color, setColor] = useState();
 
-    // State to hold information if user is offline or online
-    const [isConnected, setIsConnected] = useState(false);
-
-
     // Authenticate the user via Firebase and then redirect to the chat screen, passing the name and color props
     const onHandleStart = () => {
-        if (isConnected) {
-            signInAnonymously(auth)
-                .then(() => {
-                    console.log('Login success');
-                    props.navigation.navigate('Chat', { name: name, color: color });
-                })
-                .catch(err => console.log(`Login err: ${err}`));
-        }
-        else {
-            props.navigation.navigate('Chat', { name: name, color: color });
-        }
+        signInAnonymously(auth)
+            .then(() => {
+                console.log('Login success');
+                props.navigation.navigate('Chat', { name: name, color: color });
+            })
+            .catch(err => console.log(`Login err: ${err}`));
     }
+
 
     return (
         <View style={styles.container}>
@@ -41,7 +36,7 @@ export default function Start(props) {
                 style={styles.image}
             >
 
-                <Text style={styles.title}>FalaPala</Text>
+                <Text style={styles.title}>ChatApp</Text>
 
                 <View style={styles.box}>
 
@@ -50,7 +45,7 @@ export default function Start(props) {
                         onChangeText={(name) => setName(name)}
                         value={name}
                         style={styles.input}
-                        placeholder='Enter your name here ...'
+                        placeholder='Your name...'
                     />
 
                     {/* Allow user to choose a background color for the chat screen */}
@@ -90,6 +85,7 @@ export default function Start(props) {
                     </Pressable>
                 </View>
             </ImageBackground>
+            {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
         </View>
     )
 }
@@ -163,4 +159,4 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '600',
     }
-}); 
+});

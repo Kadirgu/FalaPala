@@ -1,88 +1,106 @@
-import React from 'react';
-import { View, Platform, KeyboardAvoidingView, Text, Button } from "react-native";
-import { GiftedChat, Bubble } from 'react-native-gifted-chat';
+import React, { useState, useEffect, useCallback } from 'react';
+import { StyleSheet, View, Platform, KeyboardAvoidingView, Text } from 'react-native';
+
+import { collection, onSnapshot, addDoc, query, orderBy } from "firebase/firestore";
+import { GiftedChat, Bubble, InputToolbar } from "react-native-gifted-chat"
+
+import { auth, db } from '../config/firebase';
+
+export default function Chat(props) {
+    // Retrieving the name and color properties passed from the Start Screen
+    let { name, color } = props.route.params;
+
+    // State to hold messages
+    const [messages, setMessages] = useState([]);
+
+    // Create reference to the messages collection on firestore
+    const messagesRef = collection(db, 'messages');
+
+    useEffect(() => {
+        // Set the screen title to the user name entered in the start screen
+        props.navigation.setOptions({ title: name });
+
+        // Create a query to the messages collection, retrieving all messages sorted by their date of creation
+        const messagesQuery = query(messagesRef, orderBy("createdAt", "desc"));
+
+        // onSnapshot returns an unsubscriber, listening for updates to the messages collection
+        const unsubscribe = onSnapshot(messagesQuery, onCollectionUpdate);
+
+        // unsubsribe snapshot listener on unmount
+        return () => unsubscribe();
+    }, []);
 
 
-export default class Chat extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            messages: [],
-        };
+    // Add the last message of the messages state to the Firestore messages collection
+    const addMessage = (message) => {
+        addDoc(messagesRef, {
+            _id: message._id,
+            text: message.text || '',
+            createdAt: message.createdAt,
+            user: message.user
+        });
     }
 
-    componentDidMount() {
-        this.setState({
-            messages: [
-                {
-                    _id: 1,
-                    text: 'Hello developer',
-                    createdAt: new Date(),
-                    user: {
-                        _id: 2,
-                        name: 'React Native',
-                        avatar: 'https://placeimg.com/140/140/any',
-                    },
-                },
-                {
-                    _id: 2,
-                    text: 'This is a system message',
-                    createdAt: new Date(),
-                    system: true,
-                },
-            ]
-        })
+    // Create custom onSend function, appending the newly created message to the messages state, 
+    // then calling addMessage to add to Firestore
+    const onSend = useCallback((messages = []) => {
+        setMessages(previousMessages => GiftedChat.append(previousMessages, messages));
+        addMessage(messages[0]);
+    }, [])
+
+    // Reading snapshot data of messages collection, adding messages to messages state
+    const onCollectionUpdate = (querySnapshot) => {
+        setMessages(
+            querySnapshot.docs.map(doc => ({
+                _id: doc.data()._id,
+                createdAt: doc.data().createdAt.toDate(),
+                text: doc.data().text,
+                user: doc.data().user
+            }))
+        )
     }
 
-    // this is what will be called when a user sends a message
-    onSend(messages = []) {
-        this.setState(previousState => ({
-            messages: GiftedChat.append(previousState.messages, messages),
-        }))
-    }
-
-    // adds background colors for the chat text to the different chat users
-    renderBubble(props) {
+    // Customize the color of the sender bubble
+    const renderBubble = (props) => {
         return (
             <Bubble
                 {...props}
                 wrapperStyle={{
-                    left: {
-                        backgroundColor: '#D3D3D3'
-                    },
                     right: {
-                        backgroundColor: '#25D366',
-                    },
+                        backgroundColor: '#000'
+                    }
                 }}
             />
-        );
+        )
     }
 
-    render() {
 
-        // takes the input parameters of background color defined in the start.js component
+    return (
+        // Setting the background color to the color picked by the user in the start screen
+        <View
+            style={[{ backgroundColor: color }, styles.container]}
+        >
+            <GiftedChat
+                renderBubble={renderBubble.bind()}
+                messages={messages}
+                showAvatarForEveryMessage={true}
+                onSend={messages => onSend(messages)}
+                // Add user data to message, using name provided in start screen and uid from auth object
+                user={{
+                    _id: auth?.currentUser?.uid,
+                    name: name,
+                    avatar: 'https://placeimg.com/140/140/any'
+                }}
+            />
 
-        let name = this.props.route.params.name;
-        let color = this.props.route.params.color;
-        // let { name, color } = this.props.route.params;
-        this.props.navigation.setOptions({ title: name }, { backgroundColor: color });
+            {/* Avoid keyboard to overlap text messages on older Andriod versions */}
+            {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
+        </View>
+    )
+}
 
-
-        return (
-            <View style={{ flex: 1, backgroundColor: color }}>
-                <GiftedChat
-                    renderBubble={this.renderBubble.bind(this)}
-                    messages={this.state.messages}
-                    onSend={(messages) => this.onSend(messages)}
-                    user={{
-                        _id: 1,
-                    }}
-                />
-
-                {/* this fixes android keyboard */}
-                {Platform.OS === "android" ? (<KeyboardAvoidingView behavior="height" />) : null}
-            </View>
-
-        );
-    }
-} 
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+})
