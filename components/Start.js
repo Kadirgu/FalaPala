@@ -68,7 +68,7 @@ export default function Start(props) {
                         onChangeText={(name) => setName(name)}
                         value={name}
                         style={styles.input}
-                        placeholder='Enter your name here ...'
+                        placeholder='Your name...'
                     />
 
                     {/* Allow user to choose a background color for the chat screen */}
@@ -108,6 +108,7 @@ export default function Start(props) {
                     </Pressable>
                 </View>
             </ImageBackground>
+            {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
         </View>
     )
 }
@@ -181,4 +182,4 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '600',
     }
-}); 
+});
