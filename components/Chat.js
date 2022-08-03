@@ -10,7 +10,7 @@ import { auth, db } from '../config/firebase';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
 
-
+import CustomActions from './CustomActions';
 
 
 export default function Chat(props) {
@@ -24,7 +24,7 @@ export default function Chat(props) {
     const [isConnected, setIsConnected] = useState();
 
     // Create reference to the messages collection on firestore
-    const messagesRef = db.collection("messages");
+    const messagesRef = collection(db, 'messages');
 
     // OFFLINE: Create functions to display messages when user is offline
     // 1. Save messages to async storage
@@ -77,7 +77,11 @@ export default function Chat(props) {
 
         // If user is online, retrieve messages from firebase store, if offline use AsyncStorage
         if (isConnected) {
-            
+            // Create a query to the messages collection, retrieving all messages sorted by their date of creation
+            const messagesQuery = query(messagesRef, orderBy("createdAt", "desc"));
+
+            // onSnapshot returns an unsubscriber, listening for updates to the messages collection
+            unsubscribe = onSnapshot(messagesQuery, onCollectionUpdate);
 
             // Delete previously saved messages in asyncStorage
             deleteMessages();

@@ -1,4 +1,3 @@
-
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
@@ -12,7 +11,6 @@ const firebaseConfig = {
     appId: "1:45406076426:web:395609f08d1894e95ae9f3",
     measurementId: "G-CLDRKZPVNR"
   };
-
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

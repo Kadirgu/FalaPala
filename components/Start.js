@@ -25,7 +25,7 @@ export default function Start(props) {
     // Authenticate the user via Firebase and then redirect to the chat screen, passing the name and color props
     const onHandleStart = () => {
         if (isConnected) {
-            auth.signInAnonymously()
+            signInAnonymously(auth)
                 .then(() => {
                     console.log('Login success');
                     props.navigation.navigate('Chat', { name: name, color: color });
@@ -68,7 +68,7 @@ export default function Start(props) {
                         onChangeText={(name) => setName(name)}
                         value={name}
                         style={styles.input}
-                        placeholder='Your name...'
+                        placeholder='Type your name + pronounce'
                     />
 
                     {/* Allow user to choose a background color for the chat screen */}
