@@ -8,8 +8,8 @@ const firebaseConfig = {
   projectId: "falapala-chatapp",
   storageBucket: "falapala-chatapp.appspot.com",
   messagingSenderId: "45406076426",
-  appId: "1:45406076426:web:395609f08d1894e95ae9f3",
-  measurementId: "G-CLDRKZPVNR"
+  appId: "1:45406076426:web:b8808cc072f194755ae9f3",
+  measurementId: "G-T83VWTTCJ8"
 };
 
 // Initialize Firebase
