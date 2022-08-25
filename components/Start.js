@@ -1,3 +1,7 @@
+
+
+
+
 // import react native gesture handler
 import 'react-native-gesture-handler';
 
@@ -9,54 +13,49 @@ import { StyleSheet, View, Text, TextInput, Pressable, TouchableOpacity, ImageBa
 import BackgroundImage from "../assets/BackgroundImage.png";
 import { Directions } from 'react-native-gesture-handler';
 
-// Create constant that holds background colors for Chat Screen
-const colors = {
-    pink: "#FFC0CB",
-    purple: "#474056",
-    violet: "#EE82EE",
-    green: "#B9C6AE",
-};
 
 export default class Start extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = { 
-        name: '', 
-        bgColor: this.colors.blue,
-  
-      };
-    }
-  
-   
-  
-    colors = {
-      red: "#890000",
-      yellow: "#FFFF00",
-      blue: "#1B70A0",
-      green: "#1DA01B",
+  constructor(props) {
+    super(props);
+    this.state = { 
+      name: '', 
+      bgColor: this.colors.blue,
+
     };
-  
-    setBgColor = (color) =>    this.setState({ bgColor: color });
-   
-   
-    render() {
-      return (
-        <View style={  styles.container}>
-          <ImageBackground source={BackgroundImage} resizeMode="cover" style={styles.image}>
-          <View style={styles.titleFrame}>
-            <Text style={styles.title}>FalaPala</Text>
-                </View>
-  
-                <View style={styles.box}>
-                <View style={styles.inputBox}>
-         <TextInput
-           style={styles.TextInput}
-           onChangeText={(name) => this.setState({name})}
-           value={this.state.name}
-           placeholder='Your name'
-         />
-        </View>
-        <View style={styles.chooseBox}>
+  }
+
+ 
+
+  colors = {
+    red: "#890000",
+    yellow: "#FFFF00",
+    blue: "#1B70A0",
+    green: "#1DA01B",
+  };
+
+  setBgColor = (color) =>    this.setState({ bgColor: color });
+ 
+ 
+  render() {
+    return (
+      <View style={  styles.container}>
+        <ImageBackground source={BackgroundImage} resizeMode="cover" style={styles.image}>
+        <View style={styles.titleFrame}>
+          <Text style={styles.title}>FalaPala</Text>
+              </View>
+
+              <View style={styles.box}>
+              <View style={styles.inputBox}>
+       <TextInput
+         style={styles.TextInput}
+         onChangeText={(name) => this.setState({name})}
+         value={this.state.name}
+         placeholder='Your name'
+       />
+      </View>
+
+
+               <View style={styles.chooseBox}>
        <Text style={styles.chooseTtitle}>Choose Background Color</Text>
        </View>
        <View style={styles.colorFrame}>
@@ -69,6 +68,18 @@ export default class Start extends React.Component {
         style={styles.color1}
   onPress={() => 
     this.setBgColor(this.colors.green)
+  }
+>
+</TouchableOpacity>
+
+<TouchableOpacity
+accessible={true}
+accessibilityLabel="Choose color"
+accessibilityHint="Let’s you choose  color red as background"
+accessibilityRole="button"
+ style={styles.color2}
+  onPress={() => 
+    this.setBgColor(this.colors.red)
   }
 >
 </TouchableOpacity>
@@ -109,137 +120,146 @@ style={styles.color4}
 </Pressable>
 </View>
 
+
+</ImageBackground>
+      </View>
+    )
+  }
+  
+}
+
+
 const styles = StyleSheet.create({
 
-container: {
-  flex: 1,
-},
-image: {
-  flex: 1,
-  width: "100%",
-  alignItems: "center",
-  justifyContent: "center",
-},
+  container: {
+    flex: 1,
+  },
+  image: {
+    flex: 1,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 
-chooseBox: {
-flex:0.4,
-  marginRight: "auto",
-  paddingLeft: 15,
-  width: "88%",
+ chooseBox: {
+  flex:0.4,
+    marginRight: "auto",
+    paddingLeft: 15,
+    width: "88%",
 
+ 
+  },
 
-},
+  chooseTtitle: {
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: "300",
+    color: "#757083",
+    opacity: 1,
+    marginBottom: 10,
+  },
 
-chooseTtitle: {
-  textAlign: 'center',
-  fontSize: 16,
-  fontWeight: "300",
-  color: "#757083",
-  opacity: 1,
-  marginBottom: 10,
-},
+  box: {
+ 
+    height: "44%",
+    width: "88%",
+    marginBottom: 30,
+    backgroundColor: "#ffffff",
+    flexGrow: 1,
+    flexShrink: 0,
+    flexDirection: "column",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    paddingTop: 15,
+    paddingBottom: 15,
+    borderRadius: 10,
+    height: 260,
+    minHeight: 260,
+    maxHeight: 300,
+  },
+  button: {
+    width: "88%",
+    height: 70,
+    borderRadius: 8,
+    backgroundColor: "#757083",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  pressText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  title : {
+    fontSize: 45,
+    fontWeight: "600",
+    color: "#FFFFFF",
+  },
+  titleFrame : {
+    width: "60%",
+    height: "auto",
+    alignItems: "center",
+    marginTop: 50,
+    resizeMode: "contain",
+    flex: 1,
+  },
 
-box: {
+  inputBox: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    backgroundColor: "#ffffff",
+    borderWidth: 1,
+    borderColor: "#000",
+    height: 50,
+    width: '88%',
+    borderRadius: 5,
+    marginBottom: 40,
+    padding:10,
+  },
+  TextInput: {
+    marginTop:5,
+    fontSize: 16,
+    fontWeight: '300',
+    opacity: .5,
+    color: "#888",
 
-  height: "44%",
-  width: "88%",
-  marginBottom: 30,
-  backgroundColor: "#ffffff",
-  flexGrow: 1,
-  flexShrink: 0,
-  flexDirection: "column",
-  justifyContent: "space-evenly",
-  alignItems: "center",
-  paddingTop: 15,
-  paddingBottom: 15,
-  borderRadius: 10,
-  height: 260,
-  minHeight: 260,
-  maxHeight: 300,
-},
-button: {
-  width: "88%",
-  height: 70,
-  borderRadius: 8,
-  backgroundColor: "#757083",
-  alignItems: "center",
-  justifyContent: "center",
-},
-pressText: {
-  color: "#FFFFFF",
-  fontSize: 16,
-  fontWeight: "600",
-},
-title : {
-  fontSize: 45,
-  fontWeight: "600",
-  color: "#FFFFFF",
-},
-titleFrame : {
-  width: "60%",
-  height: "auto",
-  alignItems: "center",
-  marginTop: 50,
-  resizeMode: "contain",
-  flex: 1,
-},
+  },
+ 
 
-inputBox: {
-  flexDirection: "row",
-  alignItems: "flex-start",
-  backgroundColor: "#ffffff",
-  borderWidth: 1,
-  borderColor: "#000",
-  height: 50,
-  width: '88%',
-  borderRadius: 5,
-  marginBottom: 40,
-  padding:10,
-},
-TextInput: {
-  marginTop:5,
-  fontSize: 16,
-  fontWeight: '300',
-  opacity: .5,
-  color: "#888",
-
-},
-
-
-colorFrame: {
-  flex: 1,
-  flexDirection: "row",
-  justifyContent: "space-between",
-},
+  colorFrame: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
 color1: {
-backgroundColor: "green",
-padding: 10,
-width: 50,
-height: 50,
-borderRadius:25
+  backgroundColor: "green",
+  padding: 10,
+  width: 50,
+  height: 50,
+  borderRadius:25
 },
 color2: {
-backgroundColor: "red",
-padding: 10,
-width: 50,
-height: 50,
-borderRadius:25
+  backgroundColor: "red",
+  padding: 10,
+  width: 50,
+  height: 50,
+  borderRadius:25
 },
 color3: {
-backgroundColor: "yellow",
-padding: 10,
-width: 50,
-height: 50,
-borderRadius:25
+  backgroundColor: "yellow",
+  padding: 10,
+  width: 50,
+  height: 50,
+  borderRadius:25
 },
 color4: {
-backgroundColor: "blue",
-padding: 10,
-width: 50,
-height: 50,
-borderRadius:25
+  backgroundColor: "blue",
+  padding: 10,
+  width: 50,
+  height: 50,
+  borderRadius:25
 },
 
 
-
+ 
 });
