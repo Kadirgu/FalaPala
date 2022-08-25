@@ -181,6 +181,14 @@ const styles = StyleSheet.create({
     },
   });
 
+  CustomAction.contextTypes = {
+    actionSheet: PropTypes.func,
+  };
+  
+  const CustomActions = connectActionSheet(CustomAction);
+  
+  export default CustomActions;
+
 export default class CustomActions extends React.Component {
     /**
      * Open Action Sheet to let user select which aciton to perform (see options)
