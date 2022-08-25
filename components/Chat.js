@@ -171,67 +171,96 @@ const firebaseConfig = {
   }
   
   
-    // Render the CustomActions component next to input bar to let user send images and geolocation
-    const renderCustomActions = (props) => {
-        return <CustomActions {...props} />;
+
+// Add messages to Firebase 
+addMessages(message) {
+    this.referenceChatMessages.add({
+      uid: this.state.uid,
+      _id: message._id,
+      text: message.text || '',
+      createdAt: message.createdAt,
+      user: message.user,
+      image: message.image || null,
+      location: message.location || null,
+  
+    });
+  }
+  
+    onSend(messages = []) {
+      this.setState(previousState => ({
+        messages: GiftedChat.append(previousState.messages, messages), }), () => { 
+          this.addMessages(this.state.messages[0]);
+          this.saveMessages()
+          this.deleteMessages()
+      })
+   
+    }
+    renderBubble(props) {
+      return (
+        <Bubble
+          {...props}
+          wrapperStyle={{
+            right: {
+              backgroundColor: '#000'
+            }
+          }}
+        />
+      )
+    }
+  
+  
+    renderInputToolbar(props) {
+      if (this.state.isConnected == false) {
+      } else {
+        return(
+          <InputToolbar
+          {...props}
+          />
+        );
+      }
+    }
+  
+    renderCustomView(props) {
+      const { currentMessage } = props;
+      if (currentMessage.location) {
+        return (
+          <MapView
+            style={{ width: 150, height: 100, borderRadius: 13, margin: 3 }}
+            region={{
+              latitude: currentMessage.location.latitude,
+              longitude: currentMessage.location.longitude,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
+          />
+        );
+      }
+      return null;
+    }
+  
+  
+    renderCustomActions = (props) => {
+      return <CustomActions {...props} />;
     };
-
-    // Render Custom View to display map when user shares geolocation
-    const renderCustomView = (props) => {
-        const { currentMessage } = props;
-        if (currentMessage.location) {
-            return (
-                <MapView
-                    style={styles.map}
-                    region={{
-                        latitude: currentMessage.location.coords.latitude,
-                        longitude: currentMessage.location.coords.longitude,
-                        latitudeDelta: 0.0922,
-                        longitudeDelta: 0.0421,
-                    }}
-                />
-            );
-        }
-        return null;
+    render() {
+  
+       let  {bgColor} = this.props.route.params;
+      return (
+      
+        <View style={{flex:1, justifyContent: 'center', backgroundColor: bgColor}}>
+          <GiftedChat
+              renderInputToolbar={this.renderInputToolbar.bind(this)}
+              renderActions={this.renderCustomActions}
+           renderBubble={this.renderBubble.bind(this)}
+           renderCustomView={this.renderCustomView}
+    messages={this.state.messages}
+    onSend={messages => this.onSend(messages)}
+    user={{ _id: this.state.user._id, name: this.state.user.name }}
+  />
+  { Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null
+   }
+  </View>
+       
+      )
     }
-
-
-    return (
-        // Setting the background color to the color picked by the user in the start screen
-        <View
-            style={[{ backgroundColor: color }, styles.container]}
-        >
-            <GiftedChat
-                renderBubble={renderBubble.bind()}
-                renderInputToolbar={renderInputToolbar.bind()}
-                renderActions={renderCustomActions}
-                renderCustomView={renderCustomView}
-                messages={messages}
-                showAvatarForEveryMessage={true}
-                onSend={messages => onSend(messages)}
-                // Add user data to message, using name provided in start screen and uid from auth object
-                user={{
-                    _id: auth?.currentUser?.uid,
-                    name: name,
-                    avatar: 'https://placeimg.com/140/140/any'
-                }}
-            />
-
-            {/* Avoid keyboard to overlap text messages on older Andriod versions */}
-            {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
-        </View>
-    )
-}
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-
-    map: {
-        width: 150,
-        height: 100,
-        borderRadius: 13,
-        margin: 3
-    }
-})
+  }
