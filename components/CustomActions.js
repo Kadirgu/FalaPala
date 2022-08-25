@@ -42,6 +42,28 @@ class CustomAction extends React.Component {
       return await snapshot.ref.getDownloadURL();
     };
   
+  // User picks an image from the library to send on the chat
+  async pickImage() {
+    // permission to select image from library?
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    try {
+      if (status === 'granted') {
+        // pick image, if permission granted
+        const result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images
+        }).catch((error) => console.error(error));
+
+        // if not cancelled, upload and send image
+        if (!result.cancelled) {
+          const imageUrl = await this.uploadImageFetch(result.uri);
+
+          this.props.onSend({ image: imageUrl });
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
 
 
