@@ -88,6 +88,29 @@ class CustomAction extends React.Component {
     }
   }
 
+   // User gets own location to send in the chat 
+   getLocation = async () => {
+    // Ask for permission
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    try {
+      if (status === 'granted') {
+        let result = await Location.getCurrentPositionAsync({});
+
+        if (result) {
+          this.props.onSend({
+            location: {
+              longitude: result.coords.longitude,
+              latitude: result.coords.latitude,
+            },
+          });
+        }
+      }
+    } catch (error) {
+      console.log(error.message);
+      Alert(error.message || 'An error has occurred!');
+    }
+  };
+
 
 export default class CustomActions extends React.Component {
     /**
