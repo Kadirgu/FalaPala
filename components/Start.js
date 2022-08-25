@@ -76,13 +76,14 @@ export default class Start extends React.Component {
 <TouchableOpacity
 accessible={true}
 accessibilityLabel="Choose color"
-accessibilityHint="Let’s you choose  color red as background"
+accessibilityHint="Let’s you choose  color yellow as background"
 accessibilityRole="button"
- style={styles.color2}
+ style={styles.color3}
   onPress={() => 
-    this.setBgColor(this.colors.red)
+    this.setBgColor(this.colors.yellow)
   }
-></TouchableOpacity>
+>
+</TouchableOpacity>
     return (
         <View style={styles.container}>
             <ImageBackground
