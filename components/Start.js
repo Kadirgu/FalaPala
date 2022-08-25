@@ -97,6 +97,26 @@ style={styles.color4}
 >
 </TouchableOpacity>
 </View>
+
+<Pressable style={styles.button}
+        
+          onPress={() => this.props.navigation.navigate('Chat', { 
+            name: this.state.name,
+            bgColor: this.state.bgColor
+           })}
+        >
+  <Text style={styles.pressText}>Start Chatting</Text>
+</Pressable>
+</View>
+
+
+</ImageBackground>
+      </View>
+    )
+  }
+  
+}
+
     return (
         <View style={styles.container}>
             <ImageBackground
