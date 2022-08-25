@@ -51,19 +51,14 @@ const firebaseConfig = {
     appId: "1:45406076426:web:b8808cc072f194755ae9f3",
   };
   
+  if (!firebase.apps.length){
+    firebase.initializeApp(firebaseConfig);
+  }
+  // Reference to the Firestore collection "messages"
+  this.referenceChatMessages = firebase.firestore().collection("messages");
   
+  }
 
-    // 2. Retrieve messages from async storage
-    const getMessages = async () => {
-        let messages = '';
-        try {
-            messages = await AsyncStorage.getItem('messages') || [];
-            setMessages(JSON.parse(messages));
-        }
-        catch (error) {
-            console.log(error.message);
-        }
-    }
 
     // 3. Delete messages from async storage (for development purposes only)
     const deleteMessages = async () => {
