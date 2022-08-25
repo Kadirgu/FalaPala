@@ -111,6 +111,34 @@ class CustomAction extends React.Component {
     }
   };
 
+  // Actionsheet with different options 
+  onActionPress = () => {
+ 
+    const options = [
+      'Choose From Library',
+      'Take Picture',
+      'Send Location',
+      'Cancel',
+    ];
+    const cancelButtonIndex = options.length-1;
+
+    this.props.showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex,
+      },
+      async (buttonIndex) => {
+        switch (buttonIndex) {
+          case 0:
+            return this.pickImage();
+          case 1:
+            return this.takePhoto();
+          case 2:
+            return this.getLocation();
+        }
+      }
+    );
+  };
 
 export default class CustomActions extends React.Component {
     /**
