@@ -140,6 +140,25 @@ class CustomAction extends React.Component {
     );
   };
 
+  render() {
+    return (
+      <TouchableOpacity
+        accessible={true}
+        accessibilityLabel="More options"
+        accessibilityHint="Send an image or your location"
+        accessibilityRole="button"
+        style={[styles.container]}
+        onPress={this.onActionPress}
+      >
+        <View style={[styles.wrapper, this.props.wrapperStyle]}>
+          <Text style={[styles.iconText, this.props.iconTextStyle]}>+</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+}
+
+
 export default class CustomActions extends React.Component {
     /**
      * Open Action Sheet to let user select which aciton to perform (see options)
