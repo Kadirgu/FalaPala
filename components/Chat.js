@@ -59,55 +59,59 @@ const firebaseConfig = {
   
   }
 
-
-    // 3. Delete messages from async storage (for development purposes only)
-    const deleteMessages = async () => {
-        try {
-            await AsyncStorage.removeItem('messages');
-        }
-        catch (error) {
-            console.log(error.message);
-        }
-    }
-
-    useEffect(() => {
-        // Set the screen title to the user name entered in the start screen
-        props.navigation.setOptions({ title: name });
-
-        // Create variable to hold unsubsriber
-        let unsubscribe;
-
-        // Check if user is offline or online using NetInfo
-        NetInfo.fetch().then(connection => {
-            if (connection.isConnected) {
-                setIsConnected(true);
-            } else {
-                setIsConnected(false);
-            }
+  componentDidMount() {
+    // Set name as title chat
+    let { name } = this.props.route.params;
+    this.props.navigation.setOptions({ title: name });
+  
+    // Check if user is offline or online
+    NetInfo.fetch().then((connection) => {
+      if (connection.isConnected) {
+        this.setState({
+          isConnected: true,
         });
-
-        // If user is online, retrieve messages from firebase store, if offline use AsyncStorage
-        if (isConnected) {
-            // Create a query to the messages collection, retrieving all messages sorted by their date of creation
-            const messagesQuery = query(messagesRef, orderBy("createdAt", "desc"));
-
-            // onSnapshot returns an unsubscriber, listening for updates to the messages collection
-            unsubscribe = onSnapshot(messagesQuery, onCollectionUpdate);
-
-            // Delete previously saved messages in asyncStorage
-            deleteMessages();
-            // Save messages to asyncStorage
-            saveMessages();
-
-            // unsubsribe snapshot listener on unmount
-            return () => unsubscribe();
-        }
-        else {
-            // Load messages from asyncStorage
-            getMessages();
-        }
-    }, [isConnected]);
-
+  
+        // Reference to load messages from Firebase
+        this.referenceChatMessages = firebase
+          .firestore()
+          .collection('messages');
+  
+        // Authenticate user anonymously
+        this.authUnsubscribe = firebase
+          .auth()
+          .onAuthStateChanged(async (user) => {
+            if (!user) {
+              firebase.auth().signInAnonymously();
+            }
+            this.setState({
+              uid: user.uid,
+              messages: [],
+              user: {
+                _id: user.uid,
+                name: name,
+              },
+            });
+            this.unsubscribe = this.referenceChatMessages
+              .orderBy('createdAt', 'desc')
+              .onSnapshot(this.onCollectionUpdate);
+          });
+      } else {
+        this.setState({
+          isConnected: false,
+        });
+        this.getMessages();
+      }
+    });
+  }
+  
+  componentWillUnmount() {
+    if (this.isConnected) {
+      this.unsubscribe();
+      this.authUnsubscribe();
+    }
+  }
+  
+  
 
     // Add the last message of the messages state to the Firestore messages collection
     const addMessage = (message) => {
