@@ -36,6 +36,20 @@ export default class Chat extends React.Component {
   
       };
   
+
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDNHECUKbWKGL0shCgBK-HN7ry6At3o504",
+    authDomain: "falapala-chatapp.firebaseapp.com",
+    projectId: "falapala-chatapp",
+    storageBucket: "falapala-chatapp.appspot.com",
+    messagingSenderId: "45406076426",
+    appId: "1:45406076426:web:b8808cc072f194755ae9f3",
+  };
   
   
 
