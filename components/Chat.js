@@ -19,29 +19,25 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 
-export default function Chat(props) {
-    // Retrieving the name and color properties passed from the Start Screen
-    let { name, color } = props.route.params;
-
-    // State to hold messages
-    const [messages, setMessages] = useState([]);
-
-    // State to hold information if user is offline or online
-    const [isConnected, setIsConnected] = useState();
-
-    // Create reference to the messages collection on firestore
-    const messagesRef = collection(db, 'messages');
-
-    // OFFLINE: Create functions to display messages when user is offline
-    // 1. Save messages to async storage
-    const saveMessages = async () => {
-        try {
-            await AsyncStorage.setItem('messages', JSON.stringify(messages));
-        }
-        catch (error) {
-            console.log(error.message);
-        }
-    }
+export default class Chat extends React.Component {
+    constructor(props) {
+      super();
+      this.state = {
+        messages: [],
+        uid: 0,
+     
+        user: {
+          _id: '',
+          name: '',
+        },
+  isConnected: null,
+  image: null,
+  location: null
+  
+      };
+  
+  
+  
 
     // 2. Retrieve messages from async storage
     const getMessages = async () => {
