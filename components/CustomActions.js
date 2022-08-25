@@ -65,7 +65,28 @@ class CustomAction extends React.Component {
     }
   }
 
+  // User takes a picture to send in the chat
+  async takePhoto() {
+    // permission to use camera?
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    try {
+      // launch camera, if permission granted
+      if (status === 'granted') {
+        let result = await ImagePicker.launchCameraAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        }).catch(error => console.error(error));
+        // if action is not cancelled, upload and send image
+        if (!result.cancelled) {
+          const imageUrl = await this.uploadImageFetch(result.uri);
 
+          this.props.onSend({ image: imageUrl });
+         
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
 
 export default class CustomActions extends React.Component {
