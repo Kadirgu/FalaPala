@@ -109,143 +109,137 @@ style={styles.color4}
 </Pressable>
 </View>
 
-
-</ImageBackground>
-      </View>
-    )
-  }
-  
-}
-
-    return (
-        <View style={styles.container}>
-            <ImageBackground
-                source={BackgroundImage}
-                resizeMode='cover'
-                style={styles.image}
-            >
-
-                <Text style={styles.title}>Chat App</Text>
-
-                <View style={styles.box}>
-
-                    {/* Input box to set user name passed to chat screen */}
-                    <TextInput
-                        onChangeText={(name) => setName(name)}
-                        value={name}
-                        style={styles.input}
-                        placeholder='Type your name + pronounce'
-                    />
-
-                    {/* Allow user to choose a background color for the chat screen */}
-                    <Text style={styles.text}>Choose Background Color:</Text>
-                    <View style={styles.colorContainer}>
-                        <TouchableOpacity
-                            style={[{ backgroundColor: colors.pink }, styles.colorbutton]}
-                            onPress={() => setColor(colors.pink)}
-                        />
-                        <TouchableOpacity
-                            style={[{ backgroundColor: colors.purple }, styles.colorbutton]}
-                            onPress={() => setColor(colors.purple)}
-                        />
-                        <TouchableOpacity
-                            style={[{ backgroundColor: colors.violet }, styles.colorbutton]}
-                            onPress={() => setColor(colors.grey)}
-                        />
-                        <TouchableOpacity
-                            style={[{ backgroundColor: colors.green }, styles.colorbutton]}
-                            onPress={() => setColor(colors.green)}
-                        />
-                    </View>
-
-                    {/* Authenticate user & Open chatroom, passing user name and background color as props */}
-                    <Pressable
-                        onPress={onHandleStart}
-                        style={({ pressed }) => [
-                            {
-                                backgroundColor: pressed
-                                    ? '#585563'
-                                    : '#757083'
-                            },
-                            styles.button
-                        ]}
-                    >
-                        <Text style={styles.buttontext}>Start Chatting</Text>
-                    </Pressable>
-                </View>
-            </ImageBackground>
-            {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
-        </View>
-    )
-}
-
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
 
-    image: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'space-evenly',
-        alignItems: 'center',
-    },
+container: {
+  flex: 1,
+},
+image: {
+  flex: 1,
+  width: "100%",
+  alignItems: "center",
+  justifyContent: "center",
+},
 
-    title: {
-        fontSize: 45,
-        fontWeight: '600',
-        color: '#ffffff',
-    },
+chooseBox: {
+flex:0.4,
+  marginRight: "auto",
+  paddingLeft: 15,
+  width: "88%",
 
-    box: {
-        width: '88%',
-        backgroundColor: 'white',
-        alignItems: 'center',
-        height: '44%',
-        justifyContent: 'space-evenly',
 
-    },
+},
 
-    input: {
-        height: 50,
-        width: '88%',
-        fontSize: 16,
-        fontWeight: '300',
-        color: '#757083',
-        borderColor: 'gray',
-        borderWidth: 1,
-        paddingHorizontal: 10,
+chooseTtitle: {
+  textAlign: 'center',
+  fontSize: 16,
+  fontWeight: "300",
+  color: "#757083",
+  opacity: 1,
+  marginBottom: 10,
+},
 
-    },
+box: {
 
-    text: {
-        color: '#757083',
-        fontSize: 16,
-        fontWeight: '300',
-    },
+  height: "44%",
+  width: "88%",
+  marginBottom: 30,
+  backgroundColor: "#ffffff",
+  flexGrow: 1,
+  flexShrink: 0,
+  flexDirection: "column",
+  justifyContent: "space-evenly",
+  alignItems: "center",
+  paddingTop: 15,
+  paddingBottom: 15,
+  borderRadius: 10,
+  height: 260,
+  minHeight: 260,
+  maxHeight: 300,
+},
+button: {
+  width: "88%",
+  height: 70,
+  borderRadius: 8,
+  backgroundColor: "#757083",
+  alignItems: "center",
+  justifyContent: "center",
+},
+pressText: {
+  color: "#FFFFFF",
+  fontSize: 16,
+  fontWeight: "600",
+},
+title : {
+  fontSize: 45,
+  fontWeight: "600",
+  color: "#FFFFFF",
+},
+titleFrame : {
+  width: "60%",
+  height: "auto",
+  alignItems: "center",
+  marginTop: 50,
+  resizeMode: "contain",
+  flex: 1,
+},
 
-    colorContainer: {
-        width: '88%',
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-    },
+inputBox: {
+  flexDirection: "row",
+  alignItems: "flex-start",
+  backgroundColor: "#ffffff",
+  borderWidth: 1,
+  borderColor: "#000",
+  height: 50,
+  width: '88%',
+  borderRadius: 5,
+  marginBottom: 40,
+  padding:10,
+},
+TextInput: {
+  marginTop:5,
+  fontSize: 16,
+  fontWeight: '300',
+  opacity: .5,
+  color: "#888",
 
-    colorbutton: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-    },
+},
 
-    button: {
-        height: 50,
-        width: '88%',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
 
-    buttontext: {
-        color: '#ffffff',
-        fontSize: 16,
-        fontWeight: '600',
-    }
+colorFrame: {
+  flex: 1,
+  flexDirection: "row",
+  justifyContent: "space-between",
+},
+color1: {
+backgroundColor: "green",
+padding: 10,
+width: 50,
+height: 50,
+borderRadius:25
+},
+color2: {
+backgroundColor: "red",
+padding: 10,
+width: 50,
+height: 50,
+borderRadius:25
+},
+color3: {
+backgroundColor: "yellow",
+padding: 10,
+width: 50,
+height: 50,
+borderRadius:25
+},
+color4: {
+backgroundColor: "blue",
+padding: 10,
+width: 50,
+height: 50,
+borderRadius:25
+},
+
+
+
 });
