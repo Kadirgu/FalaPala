@@ -135,49 +135,42 @@ const firebaseConfig = {
     });
   };
   
-    // Reading snapshot data of messages collection, adding messages to messages state
-    const onCollectionUpdate = (querySnapshot) => {
-        setMessages(
-            querySnapshot.docs.map(doc => ({
-                _id: doc.data()._id,
-                createdAt: doc.data().createdAt.toDate(),
-                text: doc.data().text || '',
-                user: doc.data().user,
-                image: doc.data().image || null,
-                location: doc.data().location || null,
-            }))
-        )
+  async getMessages() {
+    let messages = '';
+    try {
+      messages = await AsyncStorage.getItem('messages') || [];
+      this.setState({
+        messages: JSON.parse(messages)
+      });
+    } catch (error) {
+      console.log(error.message);
     }
-
-    // Customize the color of the sender bubble
-    const renderBubble = (props) => {
-        return (
-            <Bubble
-                {...props}
-                wrapperStyle={{
-                    right: {
-                        backgroundColor: '#000'
-                    }
-                }}
-            />
-        )
+  };
+  
+  
+  
+  async saveMessages() {
+    try {
+      await AsyncStorage.setItem('messages', JSON.stringify(this.state.messages));
+    } catch (error) {
+      console.log(error.message);
     }
-
-    // Hide input bar if user is online so that they cannot create or send messages
-    const renderInputToolbar = (props) => {
-        if (!isConnected) {
-            // Hide Toolbar
-        }
-        else {
-            // Display Toolbar
-            return (
-                <InputToolbar
-                    {...props}
-                />
-            );
-        }
+  }
+  
+  
+  // delete function for testing
+  async deleteMessages() {
+    try {
+      await AsyncStorage.removeItem('messages');
+      this.setState({
+        messages: []
+      })
+    } catch (error) {
+      console.log(error.message);
     }
-
+  }
+  
+  
     // Render the CustomActions component next to input bar to let user send images and geolocation
     const renderCustomActions = (props) => {
         return <CustomActions {...props} />;
