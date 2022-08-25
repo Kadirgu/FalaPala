@@ -17,42 +17,72 @@ const colors = {
     green: "#B9C6AE",
 };
 
-export default function Start(props) {
-    let [name, setName] = useState();
-    let [color, setColor] = useState();
-
-    // State to hold information if user is offline or online
-    const [isConnected, setIsConnected] = useState(false);
-
-    // Authenticate the user via Firebase and then redirect to the chat screen, passing the name and color props
-    const onHandleStart = () => {
-        if (isConnected) {
-            signInAnonymously(auth)
-                .then(() => {
-                    console.log('Login success');
-                    props.navigation.navigate('Chat', { name: name, color: color });
-                })
-                .catch(err => console.log(`Login err: ${err}`));
-        }
-        else {
-            props.navigation.navigate('Chat', { name: name, color: color });
-        }
+export default class Start extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = { 
+        name: '', 
+        bgColor: this.colors.blue,
+  
+      };
     }
+  
+   
+  
+    colors = {
+      red: "#890000",
+      yellow: "#FFFF00",
+      blue: "#1B70A0",
+      green: "#1DA01B",
+    };
+  
+    setBgColor = (color) =>    this.setState({ bgColor: color });
+   
+   
+    render() {
+      return (
+        <View style={  styles.container}>
+          <ImageBackground source={BackgroundImage} resizeMode="cover" style={styles.image}>
+          <View style={styles.titleFrame}>
+            <Text style={styles.title}>FalaPala</Text>
+                </View>
+  
+                <View style={styles.box}>
+                <View style={styles.inputBox}>
+         <TextInput
+           style={styles.TextInput}
+           onChangeText={(name) => this.setState({name})}
+           value={this.state.name}
+           placeholder='Your name'
+         />
+        </View>
+        <View style={styles.chooseBox}>
+       <Text style={styles.chooseTtitle}>Choose Background Color</Text>
+       </View>
+       <View style={styles.colorFrame}>
+     
+       <TouchableOpacity
+       accessible={true}
+       accessibilityLabel="Choose color"
+       accessibilityHint="Let’s you choose  color green as background"
+       accessibilityRole="button"
+        style={styles.color1}
+  onPress={() => 
+    this.setBgColor(this.colors.green)
+  }
+>
+</TouchableOpacity>
 
-    useEffect(() => {
-
-        // Check if user is offline or online using NetInfo
-        NetInfo.fetch().then(connection => {
-            if (connection.isConnected) {
-                setIsConnected(true);
-            } else {
-                setIsConnected(false);
-            }
-        });
-
-    })
-
-
+<TouchableOpacity
+accessible={true}
+accessibilityLabel="Choose color"
+accessibilityHint="Let’s you choose  color red as background"
+accessibilityRole="button"
+ style={styles.color2}
+  onPress={() => 
+    this.setBgColor(this.colors.red)
+  }
+></TouchableOpacity>
     return (
         <View style={styles.container}>
             <ImageBackground
