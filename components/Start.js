@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TextInput, View, Pressable, TouchableOpacity, ImageBackground, Platform, KeyboardAvoidingView } from 'react-native';
-import BackgroundImage from '../img/Background_Image.png';
+// import react native gesture handler
+import 'react-native-gesture-handler';
 
-import { signInAnonymously } from "firebase/auth";
-import { auth } from '../config/firebase';
 
-import NetInfo from '@react-native-community/netinfo';
+import React, { Component } from 'react';
+import { StyleSheet, View, Text, TextInput, Pressable, TouchableOpacity, ImageBackground,
+ } from 'react-native';
+
+import BackgroundImage from "../assets/BackgroundImage.png";
+import { Directions } from 'react-native-gesture-handler';
 
 // Create constant that holds background colors for Chat Screen
 const colors = {
