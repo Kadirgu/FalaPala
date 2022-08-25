@@ -1,14 +1,16 @@
-import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
 import React from 'react';
-import PropTypes from "prop-types";
-import * as Permissions from 'expo-permissions';
+import PropTypes from 'prop-types';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { connectActionSheet } from '@expo/react-native-action-sheet';
+
+
+//import * as Permissions from "expo-permissions";
 import * as ImagePicker from 'expo-image-picker';
+
+
 import * as Location from 'expo-location';
-
-import { storage } from '../config/firebase';
-import { ref, uploadBytes, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-
-
+import firebase from 'firebase';
+import 'firebase/firestore';
 
 export default class CustomActions extends React.Component {
     /**
