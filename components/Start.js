@@ -84,6 +84,19 @@ accessibilityRole="button"
   }
 >
 </TouchableOpacity>
+
+<TouchableOpacity
+accessible={true}
+accessibilityLabel="Choose color"
+accessibilityHint="Let’s you choose  color blue as background"
+accessibilityRole="button"
+style={styles.color4}
+  onPress={() => 
+    this.setBgColor(this.colors.blue)
+  }
+>
+</TouchableOpacity>
+</View>
     return (
         <View style={styles.container}>
             <ImageBackground
