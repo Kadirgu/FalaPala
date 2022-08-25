@@ -12,6 +12,28 @@ import * as Location from 'expo-location';
 import firebase from 'firebase';
 import 'firebase/firestore';
 
+class CustomAction extends React.Component {
+
+    // Upload images to firebase and convert it to a blob 
+    uploadImageFetch = async (uri) => {
+      const blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+          resolve(xhr.response);
+        };
+        xhr.onerror = function (e) {
+          console.log(e);
+          reject(new TypeError('Network request failed'));
+        };
+        xhr.responseType = 'blob';
+        xhr.open('GET', uri, true);
+        xhr.send(null);
+      });
+  
+
+
+
+
 export default class CustomActions extends React.Component {
     /**
      * Open Action Sheet to let user select which aciton to perform (see options)
