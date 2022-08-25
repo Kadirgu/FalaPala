@@ -112,26 +112,29 @@ const firebaseConfig = {
   }
   
   
-
-    // Add the last message of the messages state to the Firestore messages collection
-    const addMessage = (message) => {
-        addDoc(messagesRef, {
-            _id: message._id,
-            text: message.text || '',
-            createdAt: message.createdAt,
-            user: message.user,
-            image: message.image || null,
-            location: message.location || null,
-        });
-    }
-
-    // Create custom onSend function, appending the newly created message to the messages state, 
-    // then calling addMessage to add to Firestore
-    const onSend = useCallback((messages = []) => {
-        setMessages(previousMessages => GiftedChat.append(previousMessages, messages));
-        addMessage(messages[0]);
-    }, [])
-
+  onCollectionUpdate = (querySnapshot) => {
+    const messages = [];
+    // go through each document
+    querySnapshot.forEach((doc) => {
+      // get the QueryDocumentSnapshot's data
+      let data = doc.data();
+      messages.push({
+        _id: data._id,
+        text: data.text,
+        createdAt: data.createdAt.toDate(),
+        user: {
+          _id: data.user._id,
+          name: data.user.name,
+        },
+        image: data.image || null,
+        location: data.location || null,
+      });
+    });
+    this.setState({
+      messages,
+    });
+  };
+  
     // Reading snapshot data of messages collection, adding messages to messages state
     const onCollectionUpdate = (querySnapshot) => {
         setMessages(
